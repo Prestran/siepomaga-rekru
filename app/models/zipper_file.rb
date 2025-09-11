@@ -22,13 +22,9 @@ class ZipperFile < ApplicationRecord
     random_password = SecureRandom.hex
     encrypter = Zip::TraditionalEncrypter.new(random_password)
 
-    writing_buffer = Zip::OutputStream.write_buffer(encrypter: encrypter) do |output|
+    Zip::OutputStream.open(temp_zip_path, encrypter: encrypter) do |output|
       output.put_next_entry(original_filename)
       output.write File.read(unzipped_file)
-    end
-
-    File.open(temp_zip_path, "wb") do |file|
-      file.write(writing_buffer.string)
     end
 
     self.archive_file.attach(
