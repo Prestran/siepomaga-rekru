@@ -13,7 +13,7 @@ class ZipperFile < ApplicationRecord
   def zip_uploaded_file
     return unless unzipped_file.present?
 
-    temp_zip = Tempfile.new(%w[archive_file .zip], encoding: "utf-8")
+    temp_zip = Tempfile.new(%w[archive_file .zip])
     temp_zip_path = temp_zip.path
     original_filename = unzipped_file.original_filename
 
