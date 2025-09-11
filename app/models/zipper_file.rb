@@ -8,11 +8,11 @@ class ZipperFile < ApplicationRecord
 
   attr_accessor :unzipped_file
 
-  before_save :zip_uploaded_file, if: :unzipped_file
+  before_save :zip_and_save_uploaded_file, if: :unzipped_file
 
   private
 
-  def zip_uploaded_file
+  def zip_and_save_uploaded_file
     return unless unzipped_file.present?
 
     @temp_zip = Tempfile.new(%w[archive_file .zip])
