@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Files", type: :request do
+RSpec.describe "Zips", type: :request do
   describe "POST /create" do
     it "returns http success" do
       post "/files/create"

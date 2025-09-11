@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  resources :files, only: [:create, :index]
+  resources :zips, only: [:create, :index]
 end
