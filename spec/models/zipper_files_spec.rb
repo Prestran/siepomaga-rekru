@@ -5,7 +5,7 @@ RSpec.describe ZipperFile, type: :model do
     describe "zip_uploaded_file" do
       let(:file_content) { "File content" }
       let(:uploaded_file) do
-        tempfile = Tempfile.new(%w[test_file .txt])
+        tempfile = Tempfile.new(%w[test_file .txt], encoding: "UTF-8")
         tempfile.write(file_content)
         tempfile.rewind
         Rack::Test::UploadedFile.new(tempfile.path, 'text/plain')
@@ -31,16 +31,13 @@ RSpec.describe ZipperFile, type: :model do
         it "creates a valid zip archive containing the original file" do
           zipped_file.save!
 
-          temp_zip_path = Tempfile.new(["downloaded_archive", ".zip"]).path
-          File.open(temp_zip_path, "wb") do |file|
-            file.write(zipped_file.archive_file.download)
-          end
+          decode_password = Zip::TraditionalDecrypter.new(zipped_file.archive_password)
+          archive_file_path = ActiveStorage::Blob.service.send(:path_for, zipped_file.archive_file.key)
 
-          Zip::File.open(temp_zip_path) do |zip_file|
-            entry = zip_file.entries.first
-
-            expect(entry.name).to include "test_file"
-            expect(entry.get_input_stream.read).to eq(file_content)
+          Zip::InputStream.open(File.open(archive_file_path, "r"), decrypter: decode_password) do |input|
+            entry = input.get_next_entry
+            expect(entry.name).to eq "#{uploaded_file.original_filename}"
+            expect(input.read).to eq(file_content)
           end
         end
       end
