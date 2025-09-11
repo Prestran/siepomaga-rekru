@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe ZipperFile, type: :model do
   describe "callbacks" do
     describe "zip_uploaded_file" do
+      let(:user) { User.create(email_address: "jan@example.com", password: "abc") }
       let(:file_content) { "File content" }
       let(:uploaded_file) do
         tempfile = Tempfile.new(%w[test_file .txt], encoding: "UTF-8")
@@ -10,7 +11,7 @@ RSpec.describe ZipperFile, type: :model do
         tempfile.rewind
         Rack::Test::UploadedFile.new(tempfile.path, 'text/plain')
       end
-      let(:zipped_file) { ZipperFile.new(unzipped_file: uploaded_file) }
+      let(:zipped_file) { ZipperFile.new(unzipped_file: uploaded_file, user_id: user.id) }
 
       after do
         uploaded_file.close
@@ -44,7 +45,7 @@ RSpec.describe ZipperFile, type: :model do
 
       context "when an unzipped file doesn't exist" do
         it "does not attach any file" do
-          zip = ZipperFile.new
+          zip = ZipperFile.new(user_id: user.id)
           zip.save!
           expect(zip.archive_file).not_to be_attached
         end
