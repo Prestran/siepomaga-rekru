@@ -11,7 +11,7 @@ class ZipperFilesController < ApplicationController
   end
 
   def index
-    ZipperFile.all.to_json
+    Current.user.includes(:zipper_files)
   end
 
   private

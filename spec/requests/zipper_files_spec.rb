@@ -8,7 +8,7 @@ RSpec.describe "ZipperFiles", type: :request do
     Rack::Test::UploadedFile.new(tempfile.path, 'text/plain')
   end
 
-  describe "POST /zipper_file" do
+  describe "POST /zipper_files" do
     it "returns successful response and path for newly zipped file and its password" do
       post "/zipper_files", params: { name: "Name", unzipped_file: uploaded_file }
       json_body = JSON.parse(response.body)
@@ -25,7 +25,7 @@ RSpec.describe "ZipperFiles", type: :request do
     end
   end
 
-  describe "GET /index" do
+  describe "GET /zipper_files" do
     it "returns http success" do
       get "/zipper_files"
       expect(response).to have_http_status(:success)
