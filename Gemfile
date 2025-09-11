@@ -12,6 +12,7 @@ gem "sqlite3", ">= 2.1"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "rswag-api"
 gem "rswag-ui"
+gem "rubyzip"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

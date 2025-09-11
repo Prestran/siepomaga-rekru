@@ -1,2 +1,0 @@
-class Zip < ApplicationRecord
-end
