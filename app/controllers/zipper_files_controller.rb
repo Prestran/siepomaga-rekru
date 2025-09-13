@@ -1,6 +1,6 @@
 class ZipperFilesController < ApplicationController
   allow_unauthenticated_access only: %i[create index]
-  before_action :zipper_file, only: [:create]
+  before_action :zipper_file, only: [ :create ]
 
   def create
     prepared_response = ZipPayloadCreator.new(@zipper_file, request.base_url).call

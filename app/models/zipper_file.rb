@@ -1,8 +1,8 @@
 require "zip"
-require 'securerandom'
+require "securerandom"
 
 class ZipperFile < ApplicationRecord
-  Zip.force_entry_names_encoding = 'UTF-8'
+  Zip.force_entry_names_encoding = "UTF-8"
 
   has_one_attached :archive_file
 
