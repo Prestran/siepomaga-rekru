@@ -20,7 +20,7 @@ RSpec.describe "ZipperFiles", type: :request do
       expect(response).to be_successful
 
       expect(json_body["file_url"]).to include uploaded_file.original_filename
-      expect(json_body["file_password"]["password"]).to include ZipperFile.last.archive_password
+      expect(json_body["file_password"]).to include ZipperFile.last.archive_password
     end
 
     it "returns unsuccessful response when ZipperFile cannot be saved" do

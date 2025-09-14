@@ -1,11 +1,10 @@
 class ZipperFilesController < ApplicationController
   allow_unauthenticated_access only: %i[create index]
-  before_action :zipper_file, only: [ :create ]
 
   def create
-    prepared_response = ZipPayloadCreator.new(@zipper_file, request.base_url).call
-
-    if prepared_response
+    zipper_file = FileZipping::FileProcessor.new(params_with_user_id).call
+    if zipper_file
+      prepared_response = FileZipping::ZipPayloadCreator.new(zipper_file, request.base_url).call
       render json: prepared_response
     else
       render json: { error: "Something went wrong." }, status: :unprocessable_entity
@@ -18,11 +17,11 @@ class ZipperFilesController < ApplicationController
 
   private
 
-  def zipper_file
-    @zipper_file = ZipperFile.create(zipper_files_params.merge(user_id: Current.user.id))
-  end
-
   def zipper_files_params
     params.permit(:name, :unzipped_file)
+  end
+
+  def params_with_user_id
+    zipper_files_params.merge(user_id: Current.user.id)
   end
 end
