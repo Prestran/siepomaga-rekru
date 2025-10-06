@@ -1,5 +1,5 @@
 class ZipperFilesController < ApplicationController
-  allow_unauthenticated_access only: %i[create index]
+  before_action :authenticate_devise_api_token!
 
   def create
     zipper_file = FileZipping::FileProcessor.new(params_with_user_id).call

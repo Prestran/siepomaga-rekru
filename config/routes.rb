@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  resource :session
   resources :zipper_files, only: [ :create, :index ]
+  devise_for :users
 end
