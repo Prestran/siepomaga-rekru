@@ -2,6 +2,9 @@ source "https://rubygems.org"
 
 gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", require: false
+gem "devise"
+gem 'devise-jwt'
+gem 'jsonapi-serializer'
 gem "puma", ">= 5.0"
 gem "rack-cors"
 gem "rails", "~> 8.0.2"
@@ -12,6 +15,7 @@ gem "sqlite3", ">= 2.1"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "rswag-api"
 gem "rswag-ui"
+gem "rubyzip"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -20,3 +24,7 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0.0"
   gem "rswag-specs"
 end
+
+gem "factory_bot_rails"
+gem "faker", "~> 3.5"
+gem 'rack-cors'
