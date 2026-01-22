@@ -1,6 +1,4 @@
 class ZipperFilesController < ApplicationController
-  before_action :authenticate_devise_api_token!
-
   def create
     zipper_file = FileZipping::FileProcessor.new(params_with_user_id).call
     if zipper_file
@@ -12,7 +10,7 @@ class ZipperFilesController < ApplicationController
   end
 
   def index
-    render json: User.includes(:zipper_files).find(Current.user.id).zipper_files.to_json
+    render json: current_user.includes(:zipper_files).zipper_files.to_json
   end
 
   private
@@ -22,6 +20,6 @@ class ZipperFilesController < ApplicationController
   end
 
   def params_with_user_id
-    zipper_files_params.merge(user_id: Current.user.id)
+    zipper_files_params.merge(user_id: current_user.id)
   end
 end

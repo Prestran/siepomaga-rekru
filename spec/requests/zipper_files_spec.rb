@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "ZipperFiles", type: :request do
-  let(:user) { User.create(email_address: "jan@example.com", password: "abc") }
-  let(:user1) { User.create(email_address: "jan2@example.com", password: "abc") }
+  let(:user) { create(:user) }
+  let(:user1) { create(:user) }
   let(:uploaded_file) do
     tempfile = Tempfile.new(%w[test_file .txt], encoding: "UTF-8")
     tempfile.write("File Content")
@@ -10,7 +10,7 @@ RSpec.describe "ZipperFiles", type: :request do
     Rack::Test::UploadedFile.new(tempfile.path, 'text/plain')
   end
 
-  before { allow(Current).to receive(:user) { user } }
+  before { sign_in user }
 
   describe "POST /zipper_files" do
     it "returns successful response and path for newly zipped file and its password" do
